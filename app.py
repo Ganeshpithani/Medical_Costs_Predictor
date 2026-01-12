@@ -1,8 +1,7 @@
 import streamlit as st
 import pandas as pd
-import pickle
-import numpy
 import joblib
+import pickle
 import base64
 import os
 
@@ -14,7 +13,7 @@ import os
 # -------------------------------------------------
 st.set_page_config(
     layout="wide",
-    page_title="Medical Costs Predictor.pkl",
+    page_title="Medical Costs Predictor",
     initial_sidebar_state="collapsed"
 )
 
@@ -309,24 +308,31 @@ div.stButton > button:hover {{
 st.markdown(style, unsafe_allow_html=True)
 
 
-# ---------------------------------------------------------backend------------------------
+# --------------------------------------------------------------backend------------------------
 # -------------------------------------------------
 # MODEL LOADING
 # -------------------------------------------------
+MODEL_PATH = 'DecisionTree_model.pkl'
+EXCHANGE_RATE_USD_TO_INR = 84.00
 
+@st.cache_resource
+def load_model(path):
+    try:
+        return joblib.load(path)
+    except FileNotFoundError:
+        st.error(f"Model file '{path}' not found")
+        st.stop()
 
-with open("DecisionTree_model.pkl", "rb") as f:
-    model = pickle.load(f)
-
+model_pipeline = load_model(MODEL_PATH)
 
 # -------------------------------------------------
 # TITLE
 # -------------------------------------------------
 st.markdown("""
 <div class="glass-card">
-    <h1>Medical Insurance Cost Predictor</h1>
+    <h1>Medical Cost Predictor</h1>
     <p style="text-align:center; color:#caf0f8;">
-        Predict estimated medical insurance charges using patient details
+        Predict estimated medical Cost charges using patient details
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -343,19 +349,19 @@ with col1:
 
     age = st.number_input("Age", min_value=18, max_value=65, value=18)
     st.markdown(
-        "<div class='helper-text'>Insurance data supports ages between 18 and 65</div>",
+        "<div class='helper-text'>Cost data supports ages between 18 and 65</div>",
         unsafe_allow_html=True
     )
 
     bmi = st.number_input("BMI", min_value=15.0, max_value=40.0, value=15.0)
     st.markdown(
-        "<div class='helper-text'>Higher BMI may increase medical insurance cost</div>",
+        "<div class='helper-text'>Higher BMI may increase medical Cost</div>",
         unsafe_allow_html=True
     )
 
     children = st.number_input("Children", min_value=0, max_value=5, value=0)
     st.markdown(
-        "<div class='helper-text'>Number of dependents covered under insurance</div>",
+        "<div class='helper-text'>Number of dependents covered under Cost</div>",
         unsafe_allow_html=True
     )
 
@@ -454,7 +460,7 @@ if st.button("Predict Charges"):
 if st.session_state.prediction_made:
    
    st.markdown(
-    "<p class='info-text' style='text-align:center;'>Predict estimated medical insurance charges using patient details</p>",
+    "<p class='info-text' style='text-align:center;'>Predict estimated medical Cost charges using patient details</p>",
     unsafe_allow_html=True)
    st.metric(
         label="Estimated Medical Cost (INR)",
