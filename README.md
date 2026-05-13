@@ -18,7 +18,7 @@ The dataset contains 10,000 records collected between 2010 and 2020.
 - Region (Northeast, Northwest, Southeast, Southwest)
 
 ### Target:
-- Medical Insurance Cost (USD)
+- Medical Insurance Cost
 
 ## 🧠 Machine Learning Model
 - Decision Tree Regressor
