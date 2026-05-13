@@ -1,4 +1,6 @@
-# Medical Insurance Cost Predictor 💉💰
+# Medical Insurance Cost Predictor 
+
+Link : https://huggingface.co/spaces/Ganeshpithani/Medical_Cost_Predictor
 
 This project predicts medical insurance costs based on personal and lifestyle information using machine learning.
 
